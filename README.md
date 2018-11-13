@@ -1,4 +1,4 @@
-# jrfWorkbookProcessor-lambda
+# Joint Request Form (JRF) Workbook Exporter
 
 The AWS Lambda function for processing a Joint Request Form (JRF) Workbook download request
 
