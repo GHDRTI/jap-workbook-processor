@@ -1,0 +1,14 @@
+{
+  "name": "jamworkbookprocessor",
+  "version": "1.0.0",
+  "description": "The AWS Lambda function for managing the email list",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sparkpost": "^2.1.3"
+  }
+}
