@@ -1,13 +1,40 @@
 const SparkPost = require('sparkpost');
+var AWS = require("aws-sdk");
+
+
 const client = new SparkPost(process.env.SPARKPOST_KEY);
 
-exports.handler = function (event, context, callback) {
+exports.receive = function (event, context, callback) {
 
 var input_data = JSON.parse(event.body);
 
 
-console.log('I am going to send this to: ' + input_data['to']);
+console.log('I am going to send this to: ' +  input_data['to']);
 
+var message = {
+  "year": "2017"
+};
+
+var params = {
+    Message: JSON.stringify(message),
+    Subject: process.env.JRF_PROCESSING_SUBJECT,
+    TopicArn: process.env.JRF_PROCESSING_TOPIC
+};
+
+
+var sns = new AWS.SNS();
+
+sns.publish(params, function (err, response) {
+                    
+  if (err) {
+      console.log('Error sending a message', err);
+  } else {
+      console.log('Put the message');
+  }
+
+});
+
+// Send confirmation email
 client.transmissions.send({
     
     content: {
@@ -20,7 +47,7 @@ client.transmissions.send({
     ]
   })
   .then(data => {
-    console.log('Woohoo! You just sent your first mailing!');
+    console.log('Message sent');
     console.log(data);
   })
   .catch(err => {
@@ -37,6 +64,11 @@ client.transmissions.send({
             "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
         },
         
-        body: JSON.stringify("Everything is checking out.")
+        body: JSON.stringify("all good.")
     });
+}
+
+
+process.handler = function (event, context, callback) {
+
 }
