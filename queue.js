@@ -4,19 +4,16 @@ var AWS = require("aws-sdk");
 
 const client = new SparkPost(process.env.SPARKPOST_KEY);
 
-exports.receive = function (event, context, callback) {
+exports.handler = function (event, context, callback) {
 
 var input_data = JSON.parse(event.body);
 
 
 console.log('I am going to send this to: ' +  input_data['to']);
 
-var message = {
-  "year": "2017"
-};
 
 var params = {
-    Message: JSON.stringify(message),
+    Message: JSON.stringify(input_data),
     Subject: process.env.JRF_PROCESSING_SUBJECT,
     TopicArn: process.env.JRF_PROCESSING_TOPIC
 };
@@ -69,6 +66,4 @@ client.transmissions.send({
 }
 
 
-process.handler = function (event, context, callback) {
 
-}
