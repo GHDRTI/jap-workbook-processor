@@ -9,8 +9,8 @@ exports.handler = function (event, context, callback) {
 var input_data = JSON.parse(event.body);
 
 
-console.log('I am going to send this to: ' +  input_data['to']);
-
+// print out the event
+console.log(JSON.stringify(event));
 
 var params = {
     Message: JSON.stringify(input_data),
