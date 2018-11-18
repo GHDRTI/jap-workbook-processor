@@ -1,6 +1,6 @@
- var XlsxTemplate = require('xlsx-template');
- var fs = require('fs');
- var path = require("path");
+var XlsxTemplate = require('xlsx-template');
+var fs = require('fs');
+var path = require("path");
 
  // Load an XLSX file into memory
     fs.readFile(path.join(__dirname, 'templates', 'WHO_EPIRF_PC.xlsm'), function(err, data) {
