@@ -1,5 +1,6 @@
 const SparkPost = require('sparkpost');
 var AWS = require("aws-sdk");
+var dots = require("dot").process({path: "./views"});
 
 
 const client = new SparkPost(process.env.SPARKPOST_KEY);
@@ -31,13 +32,15 @@ sns.publish(params, function (err, response) {
 
 });
 
+var emailText = dots.queue_email({});
+
 // Send confirmation email
 client.transmissions.send({
     
     content: {
       from: 'WHO Workbook Exporter <workbook-exporter@ictedge.org>',
       subject: 'Workbook Export Request - Received',
-      html:'<html><body><h1>Your request is processing</h1><p>We will send you a link to your file soon here in a little bit.</p><br/><br/><br/>~ The Workbook Exporter Team</body></html>'
+      html:emailText
     },
     recipients: [
       {address: input_data['to']}
