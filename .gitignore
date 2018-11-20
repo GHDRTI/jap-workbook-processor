@@ -2,4 +2,6 @@ jamWorkbookProcessor.zip
 process-jap-export.zip
 queue-jap-export.zip
 node_modules
-test1.xlsx
+
+output/*.xlsm
+output/*.html
