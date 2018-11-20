@@ -1,5 +1,6 @@
 const SparkPost = require('sparkpost');
 var AWS = require("aws-sdk");
+var querystring = require('querystring');
 var dots = require("dot").process({path: "./views"});
 
 
@@ -7,7 +8,7 @@ const client = new SparkPost(process.env.SPARKPOST_KEY);
 
 exports.handler = function (event, context, callback) {
 
-var input_data = JSON.parse(event.body);
+var input_data = querystring.parse(event.body);
 
 
 // print out the event
