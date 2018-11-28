@@ -17,6 +17,21 @@ if (event.httpMethod == "POST") {
     //var input_data = querystring.parse(event.body);
     var input_data = JSON.parse(event.body);
 
+    // Load up the template variables
+    if (input_data['type'] == "epirf"){
+      console.log("loading an EPIRF...");
+      fileType = "PC Epidemiological Data Reporting Form v.6";
+    } else if( input_data['type'] == "jrf") {
+      console.log("loading an JRF...");
+      fileType = "PC Joint Reporting Form v.2";
+    } else if(input_data['type'] == "jrsm") {
+      console.log("loading an JRSM...");
+      fileType = "Joint Request for Selected PC Medicines";
+    } else  {
+      console.log("You didn't specify a recognized template type.");
+      fileType = "Unknown file type";
+    } 
+
     var params = {
         Message: JSON.stringify(input_data),
         Subject: process.env.JRF_PROCESSING_SUBJECT,
@@ -35,7 +50,8 @@ if (event.httpMethod == "POST") {
 
     });
 
-    var emailText = dots.queue_email({});
+    var emailText = dots.queue_email({ type:  fileType });
+
 
     // Send confirmation email
     client.transmissions.send({

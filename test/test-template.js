@@ -1,69 +1,17 @@
-var XlsxTemplate = require('xlsx-template');
 var fs = require('fs');
-var path = require("path");
-var AWS = require("aws-sdk");
+var dots = require("dot").process({path: "./views"});
 
-var s3 = new AWS.S3(); 
+//var tempFn = doT.template("<h1>Here is a sample template {{=it.foo}}</h1>");
 
- // Load an XLSX file into memory
-    fs.readFile(path.join(__dirname, 'templates', 'WHO_EPIRF_PC.xlsm'), function(err, data) {
+//var resultText = tempFn({foo: 'with doT'});
 
-        // Create a template
-        var template = new XlsxTemplate(data);
+var resultText = dots.queue_email({
+	url: "http://google.com", 
+	type: "PC Epidemiological Data Reporting Form v.5"
+});
+var emailText = dots.process_email({url: "http://www.googl.com"
+});
 
-        // Replacements take place on first sheet
-        var sheetNumber = 1;
+fs.writeFileSync('./output/test-queue.html', resultText);
+fs.writeFileSync('./output/test-process.html', emailText);
 
-        // Set up some placeholder values matching the placeholders in the template
-        var values = {
-                extractDate: new Date(),
-                dates: [ new Date("2013-06-01"), new Date("2013-06-02"), new Date("2013-06-03") ],
-                people: [
-                    {name: "John Smith", age: 20},
-                    {name: "Bob Johnson", age: 22}
-                ],
-                reportingYear: "2017",
-                country: "Ethiopia" 
-
-            };
-
-        // Perform substitution
-        template.substitute(sheetNumber, values);
-
-
-
-
-        // Get binary data
-        //var newData = template.generate();
-
-        var options = {type: 'base64'};
-        
-        var mergedWorkbook = template.generate( options ); 
-        //buf = new Buffer.from(mergedWorkbook)
-  
-       var params = {
-        Bucket: 'org.rti.ntd.workbooks',
-        Body : mergedWorkbook,
-        Key : "folder/"+Date.now()+"_"+path.basename("adam.xlsm"),
-        ContentEncoding: 'base64',
-        ACL: 'public-read'
-      };
-
-        fs.writeFileSync('output/test1.xlsm', mergedWorkbook, 'base64');
-
-            // Upload
-          s3.upload(params, function (err, data) {
-            //handle error
-            if (err) {
-              console.log("Error saving to S3", err);
-            }
-
-            //success
-            if (data) {
-              console.log("Uploaded in:", data.Location);
-              
-              }
-          });
-        
-
-    });

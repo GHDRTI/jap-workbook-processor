@@ -64,11 +64,12 @@ fs.readFile( filePath, function(err, data) {
 
       // get the merged workbook
       console.log("generating new workbook");
-      var mergedWorkbook = template.generate();  
+      var options = {type: 'arraybuffer'};
+      var mergedWorkbook = template.generate( options ); 
 
       var params = {
         Bucket: 'org.rti.ntd.workbooks',
-        Body : fs.createReadStream(filePath),
+        Body : Buffer.from(mergedWorkbook),
         Key : "folder/"+Date.now()+"_"+path.basename(filePath),
         ACL: 'public-read'
       };

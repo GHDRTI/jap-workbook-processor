@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.363.0",
     "dot": "^1.1.2",
     "fs": "0.0.1-security",
     "sparkpost": "^2.1.3",
